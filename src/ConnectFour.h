@@ -82,4 +82,12 @@ class ConnectFour {
   std::string GetStateString() const {
     return std::string(board_state_.data(), string_size);
   }
+
+ private:
+  BoardStateType board_state_;
+  ConnectFourStatus game_status_;
+  const int num_rows = CONNECT_FOUR_NUM_ROWS;
+  const int num_cols = CONNECT_FOUR_NUM_COLS;
+  const int string_size = num_rows * num_cols;
+  bool x_turn;
 };
