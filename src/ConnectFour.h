@@ -66,9 +66,20 @@ class ConnectFour {
   std::vector<ConnectFourAction> GetAvailableActions() const;
   void ApplyAction(ConnectFourAction const & action);
   ConnectFour ForwardModel(ConnectFourAction const& action) const;
-  ConnectFourStatus GetGameStatus() const;
-  bool GameOver() const;
-  bool Draw() const;
-  std::string GetStateString() const;
 
+  ConnectFourStatus GetGameStatus() const {
+    return game_status_;
+  }
+
+  bool GameOver() const {
+    return game_status_ != ConnectFourStatus::IN_PROGRESS;
+  }
+
+  bool Draw() const {
+    return game_status_ == ConnectFourStatus::DRAW;
+  }
+
+  std::string GetStateString() const {
+    return std::string(board_state_.data(), string_size);
+  }
 };
