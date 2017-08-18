@@ -84,6 +84,75 @@ class ConnectFour {
   }
 
  private:
+  bool DidPlayerWin(char player) const {
+    // Vertical lines
+    for (int row=0; row < num_rows-3; ++row) {
+      for (int col=0; col < num_cols; ++col) {
+        if (board_state_(row+0, col) == player &&
+            board_state_(row+1, col) == player &&
+            board_state_(row+2, col) == player &&
+            board_state_(row+3, col) == player)
+          return true;
+      }
+    }
+    // Horizontal lines
+    for (int row=0; row < num_rows; ++row) {
+      for (int col=0; col < num_cols-3; ++col) {
+        if (board_state_(row, col+0) == player &&
+            board_state_(row, col+1) == player &&
+            board_state_(row, col+2) == player &&
+            board_state_(row, col+3) == player)
+          return true;
+      }
+    }
+    // Ascending diagional
+    for (int row=0; row < num_rows-3; ++row) {
+      for (int col=0; col < num_cols-3; ++col) {
+        if (board_state_(row+0, col+0) == player &&
+            board_state_(row+1, col+1) == player &&
+            board_state_(row+2, col+2) == player &&
+            board_state_(row+3, col+3) == player)
+          return true;
+      }
+    }
+    // Descending diagional
+    for (int row=0; row < num_rows-3; ++row) {
+      for (int col=0; col < num_cols-3; ++col) {
+        if (board_state_(row+3, col+0) == player &&
+            board_state_(row+2, col+1) == player &&
+            board_state_(row+1, col+2) == player &&
+            board_state_(row+0, col+3) == player)
+          return true;
+      }
+    }
+  }
+
+  ConnectFourStatus UpdateConnectFourStatus() {
+    if (DidPlayerWin('x')) {
+      return ConnectFourStatus::X_WINS;
+    }
+    if (DidPlayerWin('o')) {
+      return ConnectFourStatus::O_WINS;
+    }
+
+    if (BoardFull()) {
+      return ConnectFourStatus::DRAW;
+    }
+
+    return ConnectFourStatus::IN_PROGRESS;
+  }
+
+  bool BoardFull() const {
+    for (int row_index = 0; row_index < size; row_index++) {
+      for (int column_index = 0; column_index < size; column_index++) {
+        if (board_state_(row_index, column_index) == '-') {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
   BoardStateType board_state_;
   ConnectFourStatus game_status_;
   const int num_rows = CONNECT_FOUR_NUM_ROWS;
