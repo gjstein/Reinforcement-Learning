@@ -72,6 +72,9 @@ class ConnectFour {
 
   std::vector<ConnectFourAction> GetAvailableActions() const {
     std::vector<ConnectFourAction> actions;
+    if(GameOver()) {
+      return actions;
+    }
     for (int col = 0; col < num_cols; ++col) {
       if (board_state_(0, col) == '-') {
         actions.push_back({col});
