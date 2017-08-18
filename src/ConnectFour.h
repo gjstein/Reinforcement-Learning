@@ -29,14 +29,11 @@ std::string to_string(ConnectFourStatus status) {
 }
 
 struct ConnectFourAction {
-  int row_index;
   int column_index;
 };
 
 std::string to_string(ConnectFourAction const& action) {
-    return "{"
-           + std::to_string(action.row_index) + ", "
-           + std::to_string(action.column_index) + "}";
+    return "{" + std::to_string(action.column_index) + "}";
 }
 
 class ConnectFour {
@@ -47,7 +44,13 @@ class ConnectFour {
                                        CONNECT_FOUR_NUM_ROWS,
                                        CONNECT_FOUR_NUM_COLS>;
 
-  ConnectFour(std::string const& state) { }
+  ConnectFour(std::string const& state) {
+    size_t num_x = std::count(state.begin(), state.end(), 'x');
+    size_t num_o = std::count(state.begin(), state.end(), 'o');
+    x_turn = !(num_x == num_o + 1);
+    memcpy(board_state_.data(), state.c_str(), string_size);
+    game_status_ = UpdateConnectFourStatus();
+  }
 
   ConnectFour() {
     Reset();
@@ -63,9 +66,32 @@ class ConnectFour {
     x_turn = true;
   }
 
-  std::vector<ConnectFourAction> GetAvailableActions() const;
-  void ApplyAction(ConnectFourAction const & action);
-  ConnectFour ForwardModel(ConnectFourAction const& action) const;
+  std::vector<ConnectFourAction> GetAvailableActions() const {
+    std::vector<ConnectFourAction> actions;
+    for (int col = 0; col < num_cols; ++col) {
+      if (board_state_(0, col) == '-') {
+        action.push_back({col});
+      }
+    }
+
+    return actions;
+  }
+
+  void ApplyAction(ConnectFourAction const & action) {
+    int row = num_rows - 1;
+    while (!(board_state_(row, action.column_index) == '-')) {
+      --row;
+    }
+    board_state_(row, action.column_index) = x_turn ? 'x' : 'o';
+    x_turn = !x_turn;
+    game_status_ = UpdateConnectFourStatus();
+  }
+
+  ConnectFour ForwardModel(ConnectFourAction const& action) const {
+    ConnectFour new_board(*this);
+    new_board.ApplyAction(action);
+    return new_board;
+  }
 
   ConnectFourStatus GetGameStatus() const {
     return game_status_;
@@ -143,14 +169,8 @@ class ConnectFour {
   }
 
   bool BoardFull() const {
-    for (int row_index = 0; row_index < size; row_index++) {
-      for (int column_index = 0; column_index < size; column_index++) {
-        if (board_state_(row_index, column_index) == '-') {
-          return false;
-        }
-      }
-    }
-    return true;
+    auto actions = GetAvailableActions();
+    return (actions.size() == 0);
   }
 
   BoardStateType board_state_;
