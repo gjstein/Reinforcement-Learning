@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 
-template <class Game, template <class Game> class Agent1, template <class Game> class Agent2>
+template <class Game, template <class Game1> class Agent1, template <class Game2> class Agent2>
 class GameSession {
 public:
     GameSession(Game &game, Agent1<Game>& agent1, Agent2<Game> &agent2)
