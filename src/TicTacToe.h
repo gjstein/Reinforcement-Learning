@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <iostream>
 #include <vector>
 #include <Eigen/Dense>
 
@@ -63,6 +64,10 @@ public:
         board_state_.fill('-');
         x_turn = true;
     }
+
+  void PrintGame() const {
+    std::cout << board_state_ << std::endl;
+  }
 
     std::vector<TicTacToeAction> GetAvailableActions() const {
         std::vector<TicTacToeAction> actions;

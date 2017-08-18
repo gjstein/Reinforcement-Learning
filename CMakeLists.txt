@@ -6,7 +6,7 @@ set(CMAKE_CXX_FLAGS "-std=c++11 -O3")
 include_directories(${EIGEN3_INCLUDE_DIR})
 
 file(GLOB RL_SRC "src/test.cpp")
-file(GLOB CONNECT_FOUR_RL_SRC "src/debug.cpp")
+file(GLOB CONNECT_FOUR_RL_SRC "src/connect_four_player.cpp")
 
 add_executable(tictactoe 
   ${RL_SRC}
