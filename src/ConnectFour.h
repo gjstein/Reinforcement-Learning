@@ -60,6 +60,10 @@ class ConnectFour {
     return board_state_;
   }
 
+  void PrintGame() const {
+    std::cout << board_state_ << std::endl << to_string(game_status_) << std::endl;
+  }
+
   void Reset() {
     game_status_ = ConnectFourStatus::IN_PROGRESS;
     board_state_.fill('-');
@@ -70,7 +74,7 @@ class ConnectFour {
     std::vector<ConnectFourAction> actions;
     for (int col = 0; col < num_cols; ++col) {
       if (board_state_(0, col) == '-') {
-        action.push_back({col});
+        actions.push_back({col});
       }
     }
 
@@ -151,6 +155,7 @@ class ConnectFour {
           return true;
       }
     }
+    return false;
   }
 
   ConnectFourStatus UpdateConnectFourStatus() {
