@@ -15,14 +15,14 @@ int main(int argc, char* argv[])  {
     std::srand ( unsigned ( std::time(0) ) );
 
     int x_wins=0, o_wins=0, draws=0;
-    int num_games = 1;
+    int num_games = 100;
 
     ConnectFour game;
     // MinimaxAgent<ConnectFour> player1;
-    GJSMonteCarloTreeSearchAgent<ConnectFour> player1;
-    player1.SetIterationLimit(100000);
-    MonteCarloTreeSearchAgent<ConnectFour> player2;
-    player2.SetIterationLimit(1000000);
+    MonteCarloTreeSearchAgent<ConnectFour> player1;
+    player1.SetIterationLimit(4000);
+    GJSMonteCarloTreeSearchAgent<ConnectFour> player2;
+    player2.SetIterationLimit(4000);
 
     // game.ApplyAction({0});
     // game.ApplyAction({3});
@@ -31,7 +31,7 @@ int main(int argc, char* argv[])  {
     // game.ApplyAction({1});
     // game.ApplyAction({5});
 
-    GameSession<ConnectFour, GJSMonteCarloTreeSearchAgent, MonteCarloTreeSearchAgent> session(game, player1, player2);
+    GameSession<ConnectFour, MonteCarloTreeSearchAgent, GJSMonteCarloTreeSearchAgent> session(game, player1, player2, true);
     Stopwatch sw;
 
     sw.Start();
