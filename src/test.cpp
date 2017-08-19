@@ -5,6 +5,7 @@
 #include "PickRandomActionAgent.h"
 #include "MinimaxAgent.h"
 #include "TemporalDifferenceAgent.h"
+#include "GJSMonteCarloTreeSearchAgent.h"
 #include "MonteCarloTreeSearchAgent.h"
 #include "TestGame.h"
 #include "Stopwatch.h"
@@ -17,10 +18,10 @@ int main(int argc, char* argv[])  {
 
     TicTacToe game;
     MinimaxAgent<TicTacToe> player1;
-    MonteCarloTreeSearchAgent<TicTacToe> player2;
+    GJSMonteCarloTreeSearchAgent<TicTacToe> player2;
     player2.SetIterationLimit(10000);
 
-    GameSession<TicTacToe, MinimaxAgent, MonteCarloTreeSearchAgent> 
+    GameSession<TicTacToe, MinimaxAgent, GJSMonteCarloTreeSearchAgent>
     session(game, player1, player2);
     Stopwatch sw;
 
