@@ -4,20 +4,24 @@
 template <class Game, template <class Game1> class Agent1, template <class Game2> class Agent2>
 class GameSession {
 public:
-    GameSession(Game &game, Agent1<Game>& agent1, Agent2<Game> &agent2)
-    : game(game), player1(agent1), player2(agent2) { }
+  GameSession(Game &game, Agent1<Game>& agent1, Agent2<Game> &agent2, bool do_print_debug = false)
+      : game(game), player1(agent1), player2(agent2), do_print_debug_(do_print_debug) { }
 
     typename Game::Status PlayOnce() {
         while(true) {
             game.ApplyAction(player1.GetAction(game));
+            if (do_print_debug_)
+              game.PrintGame();
             if(game.GameOver()) {
-                player2.GetAction(game);
+              player2.GetAction(game);
                 break;
             }
             auto test = player2.GetAction(game);
             game.ApplyAction(test);
+            if (do_print_debug_)
+              game.PrintGame();
             if(game.GameOver()) {
-                player1.GetAction(game);
+              player1.GetAction(game);
                 break;
             }
         }
@@ -52,4 +56,5 @@ private:
     Game& game;
     Agent1<Game>& player1;
     Agent2<Game>& player2;
+  bool do_print_debug_;
 };
