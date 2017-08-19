@@ -7,6 +7,7 @@
 #include "MinimaxAgent.h"
 #include "TemporalDifferenceAgent.h"
 #include "MonteCarloTreeSearchAgent.h"
+#include "GJSMonteCarloTreeSearchAgent.h"
 #include "TestGame.h"
 #include "Stopwatch.h"
 
@@ -18,8 +19,8 @@ int main(int argc, char* argv[])  {
 
     ConnectFour game;
     // MinimaxAgent<ConnectFour> player1;
-    MonteCarloTreeSearchAgent<ConnectFour> player1;
-    player1.SetIterationLimit(1000);
+    GJSMonteCarloTreeSearchAgent<ConnectFour> player1;
+    player1.SetIterationLimit(100000);
     MonteCarloTreeSearchAgent<ConnectFour> player2;
     player2.SetIterationLimit(1000000);
 
@@ -27,10 +28,10 @@ int main(int argc, char* argv[])  {
     // game.ApplyAction({3});
     // game.ApplyAction({0});
     // game.ApplyAction({4});
-    // game.ApplyAction({0});
-    // game.ApplyAction({4});
+    // game.ApplyAction({1});
+    // game.ApplyAction({5});
 
-    GameSession<ConnectFour, MonteCarloTreeSearchAgent, MonteCarloTreeSearchAgent> session(game, player1, player2);
+    GameSession<ConnectFour, GJSMonteCarloTreeSearchAgent, MonteCarloTreeSearchAgent> session(game, player1, player2);
     Stopwatch sw;
 
     sw.Start();
