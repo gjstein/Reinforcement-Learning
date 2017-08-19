@@ -5,59 +5,12 @@
 #include <memory>
 #include "utils.h"
 #include "Stopwatch.h"
-
-struct GameStats {
-  int wins;
-  int plays;
-};
+#include "MonteCarloTreeSearchAgent.h"
 
 template <class Game>
-struct TreeNode {
-  using TreeNodePtr = TreeNode<Game>*;
-  
-  TreeNode(Game const& game, 
-           bool our_turn, 
-           TreeNodePtr parent,
-           typename Game::Action action,
-           float exploration_rate)
-    : stats({0, 0}), 
-      state(game), 
-      our_turn(our_turn), 
-      parent(parent), 
-      action(action), 
-      exploration_rate(exploration_rate) { 
-        unexplored_actions = state.GetAvailableActions();
-        std::random_shuffle(unexplored_actions.begin(), unexplored_actions.end());
-  }
-
-  double WinRatio() const {
-    return stats.wins / (double) stats.plays;
-  }
-
-  double UpperConfidenceBound() const {
-  double win_percentage = WinRatio();
-    
-    if(!parent) {
-      return win_percentage;
-    }
-    double confidence_bound = sqrt(exploration_rate * log(parent->stats.plays * 1.0) / stats.plays);
-    return win_percentage + confidence_bound; 
-  }
-
-  GameStats stats;
-  Game state;
-  bool our_turn;
-  typename Game::Action action;
-  float exploration_rate;
-  std::vector<TreeNodePtr> children;
-  std::vector<typename Game::Action> unexplored_actions;
-  TreeNodePtr parent;
-};
-
-template <class Game>
-class MonteCarloTreeSearchAgent {
+class GJSMonteCarloTreeSearchAgent {
 public:
-  MonteCarloTreeSearchAgent() : exploration_rate(2), iteration_limit(100) { }
+  GJSMonteCarloTreeSearchAgent() : exploration_rate(2), iteration_limit(100) { }
   using TreeNodePtr = TreeNode<Game>*;
 
   typename Game::Action GetAction(const Game& state) {
@@ -76,8 +29,10 @@ public:
        best_value = value;
        best_action = child->action;
      }
+     /*
      std::cout << to_string(child->action) << " " << child->stats.plays << " " <<
          0.5 + (0.5 * child->stats.wins) / child->stats.plays << std::endl;
+     */
    }
 
    return best_action;
